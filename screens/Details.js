@@ -15,18 +15,20 @@ const Details = () => {
 
   if (!fontsLoaded) {
     return null; 
-  };
+  }
 
-  
+  const handleControl = () => {
+    navigation.navigate("ControlOn");
+  };
 
   return (
     <View style={styles.aboutUsScreen}>
       <View style={[styles.aboutUsScreenDeviceItem, styles.aboutPosition]} />
       <View style={[styles.aboutUsScreenChild, styles.aboutChildPosition]} />
-      <Text style={[styles.about, styles.teamTypo]}>DETAILS</Text>
+      <Text style={[styles.about, styles.teamTypo]}>Details</Text>
       <Pressable
         style={styles.vectorIconPNG}
-        onPress={() => navigation.navigate("Stats")}
+        onPress={() => navigation.navigate("HomeScreen")}
       >
         <Image
           style={styles.vectorIconPNG}
@@ -34,48 +36,6 @@ const Details = () => {
           source={require("../assets/vector7.png")}
         />
       </Pressable>
-      <Image
-        style={[styles.homeIcon, styles.buttonPosition]}
-        contentFit="cover"
-        source={require("../assets/home.png")}
-      />
-      <Pressable
-        style={[styles.homeIcon, styles.buttonPosition]}
-        onPress={() => navigation.navigate("HomeScreen")}
-      >
-        <Image
-          style={styles.homeIcon}
-          contentFit="cover"
-          source={require("../assets/home.png")}
-        />
-      </Pressable>
-      <Image
-        style={[styles.taskIcon, styles.iconPosition]}
-        contentFit="cover"
-        source={require("../assets/task.png")}
-      />
-      <Image
-        style={[styles.controlIcon, styles.iconPosition, styles.lightGreenTint]}
-        contentFit="cover"
-        source={require("../assets/control.png")}
-      />
-      <Image
-        style={[styles.vectorIcon5, styles.iconLayout]}
-        contentFit="cover"
-        source={require("../assets/vector3.png")}
-      />
-      <Pressable
-        style={[styles.vectorIcon5, styles.iconLayout]}
-        onPress={() => navigation.navigate("AboutUsScreen")}
-      >
-        <Image
-          style={styles.vectorIcon5}
-          contentFit="cover"
-          source={require("../assets/vector3.png")}
-        />
-      </Pressable>
-      
-      
       
     </View>
   );
@@ -88,31 +48,6 @@ const styles = StyleSheet.create({
     right: "0%",
     position: "absolute",
     width: "100%",
-  },
-  homeIcon: {
-    height: "3.94%",
-    width: "9.44%",
-    right: "29.44%",
-    bottom: "6.53%",
-    left: "-9.11%",
-    top: 709,
-    zIndex: 1,
-  },
-  taskIcon: {
-    height: "3.84%",
-    width: "7.44%",
-    right: "29.44%",
-    bottom: "6.53%",
-    left: "-12.11%",
-    top: 610,
-  },
-  controlIcon: {
-    height: "4%",
-    width: "9.28%",
-    right: "33.06%",
-    bottom: "-74.18%",
-    left: "12.67%",
-    bottom: -580,
   },
   lightGreenTint: {
     tintColor: "#69B578",
@@ -161,12 +96,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     position: "absolute",
   },
-  iconLayout: {
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
-  },
   aboutUsScreenChild: {
     height: "15.78%",
     top: "-3.44%",
@@ -202,54 +131,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-  },
-  logo: {
-    width: 300, // Adjust width as needed
-    height: 300, // Adjust height as needed
-    marginBottom: 20, // Example spacing
-  },
-  logoPressed: {
-    opacity: 0.5, // Adjust the opacity to darken the image when pressed
-  },
-  statusContainer: {
-    backgroundColor: "#132A17",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 20,
-    elevation: 3,
-    marginTop: 10, // Add some margin for spacing
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 23,
-    fontFamily: 'Poppins-SemiBold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2,
-  },
-  buttonText2: {
-    color: "#8E8686",
-    fontSize: 27,
-    fontFamily: 'Poppins-SemiBold',
-    top: 10,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 2,
-  },
-  addButton: {
-    marginTop: 20,
-    paddingVertical: 4,
-    paddingHorizontal: 17,
-    backgroundColor: "#132A17",
-    borderRadius: 20,
-    elevation: 3,
-    left: 94,
-  },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    textAlign: 'center',
   },
 });
 
