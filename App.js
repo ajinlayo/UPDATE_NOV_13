@@ -23,6 +23,8 @@ import LogOut from "./screens/LogOut";
 import AccountSettingsOption from "./screens/AccountSettingsOption";
 import UserInfo from "./screens/UserInfo";
 import Stats from "./screens/Stats";
+import Details from "./screens/Details";
+
 
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -67,6 +69,8 @@ const App = () => {
         <Stack.Screen name="AccountSettingsOption" component={AccountSettingsOption} />
         <Stack.Screen name="UserInfo" component={UserInfo} />
         <Stack.Screen name="Stats" component={Stats} />
+        <Stack.Screen name="Details" component={Details} />
+
 
         {/* Add other screens here */}
       </Stack.Navigator>

@@ -11,6 +11,10 @@ const Stats = () => {
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
 
+  const handleDetailspress = () => {
+    // Navigate to Stats screen or any other screen
+    navigation.navigate("Details");
+  }
   // State for chart data
   const [chartData, setChartData] = useState({
     labels: [],
@@ -78,7 +82,7 @@ const Stats = () => {
           const latestDetection = detections[detections.length - 1];
           setDetectionInfo({
             numberOfBugs: latestDetection.numberOfBugs,
-            bugsConfidenceScore: latestDetection.bugsConfidenceScore,
+            bugsConfidenceScore: latestDetection.bugsConfidenceScore, 
             numberOfPanicles: latestDetection.numberOfPanicles,
             paniclesConfidenceScore: latestDetection.paniclesConfidenceScore,
           });
@@ -126,8 +130,12 @@ const Stats = () => {
         <Button title="Refresh Data" onPress={refreshData} />
       </View>
 
+      <View style={styles.detailsButton}>
+        <Button title="Details" onPress={handleDetailspress} />
+      </View>
+
       {/* New Container for Additional Data */}
-      <View style={styles.infoContainer}>
+      {/* <View style={styles.infoContainer}>
         <Text style={styles.infoText}>
           Bugs Detected: {detectionInfo.numberOfBugs}
         </Text>
@@ -140,7 +148,7 @@ const Stats = () => {
         <Text style={styles.infoText}>
           Panicles Confidence: {detectionInfo.paniclesConfidenceScore.toFixed(2)}%
         </Text>
-      </View>
+      </View> */}
       {/* <View style={[styles.button, styles.buttonShadowBox1]}>
         <View style={[styles.buttonChild, styles.buttonPosition]} />
         <Text style={[styles.getStarted, styles.getTypo1]}>Get Started</Text>
@@ -1469,6 +1477,16 @@ historyData: {
   left: 105,
   position: "absolute",
   },
+  detailsButton: {
+    color: "#AFE1AF",
+    borderRadius: 5,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    top: 580,
+    width: '45%', 
+    left: 105,
+    position: "absolute",
+    },
   infoContainer: {
     backgroundColor: '#f1f1f1',
     padding: 15,
