@@ -26,7 +26,6 @@ import Stats from "./screens/Stats";
 import Details from "./screens/Details";
 
 
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
@@ -70,7 +69,6 @@ const App = () => {
         <Stack.Screen name="UserInfo" component={UserInfo} />
         <Stack.Screen name="Stats" component={Stats} />
         <Stack.Screen name="Details" component={Details} />
-
 
         {/* Add other screens here */}
       </Stack.Navigator>

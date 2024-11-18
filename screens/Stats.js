@@ -1,21 +1,19 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Button, Dimensions, Pressable } from 'react-native';
-import { Image } from "expo-image";
+import { StyleSheet, View, Text, Button, Alert, Dimensions, Image, Pressable } from 'react-native';
 import { Border, FontSize, FontFamily, Color } from '../GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { BarChart } from 'react-native-chart-kit';
-import axios from 'axios';
+import axios from "axios";
 
 const Stats = () => {
   const navigation = useNavigation();
-  const screenWidth = Dimensions.get('window').width;
 
-  const handleDetailspress = () => {
-    // Navigate to Stats screen or any other screen
-    navigation.navigate("Details");
-  }
-  // State for chart data
+  const handleGetStartedPress = () => {
+    // Navigate to Details
+    navigation.navigate('Details');
+  };
+
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -29,21 +27,12 @@ const Stats = () => {
     ],
   });
 
-  // State for displaying additional detection information
-  const [detectionInfo, setDetectionInfo] = useState({
-    numberOfBugs: 0,
-    bugsConfidenceScore: 0,
-    numberOfPanicles: 0,
-    paniclesConfidenceScore: 0,
-  });
-
-  // Function to fetch data from API
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        'https://production-myentobackend.onrender.com/api/v1/auth/get-all-results'
+        "https://production-myentobackend.onrender.com/api/v1/auth/get-all-results"
       );
-      console.log('Fetched data:', response.data);
+      console.log("Fetched data:", response.data);
 
       if (response.data.success) {
         const detections = response.data.detections;
@@ -51,14 +40,18 @@ const Stats = () => {
         // Prepare labels and data for the chart (Only Time)
         const labels = detections.map((detection) => {
           const time = new Date(detection.createdAt);
-          return time.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
+          return time.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true, // 12-hour format with AM/PM
           });
         });
-        const panicleCounts = detections.map((d) => d.numberOfPanicles);
-        const bugCounts = detections.map((d) => d.numberOfBugs);
+        const panicleCounts = detections.map(
+          (detection) => detection.numberOfPanicles
+        );
+        const bugCounts = detections.map(
+          (detection) => detection.numberOfBugs
+        );
 
         // Update chart data with time-based labels
         setChartData({
@@ -66,32 +59,21 @@ const Stats = () => {
           datasets: [
             {
               data: bugCounts,
-              color: 'rgba(0, 122, 255)',
-              label: 'Bugs',
+              color: "rgba(0, 122, 255)", // Blue bars for Bugs
+              label: "Bugs",
             },
             {
               data: panicleCounts,
-              color: 'rgba(255, 99, 132)',
-              label: 'Panicles',
+              color: "rgba(255, 99, 132)", // Red bars for Panicles
+              label: "Panicles",
             },
           ],
         });
-
-        // Update detection information (using the most recent detection)
-        if (detections.length > 0) {
-          const latestDetection = detections[detections.length - 1];
-          setDetectionInfo({
-            numberOfBugs: latestDetection.numberOfBugs,
-            bugsConfidenceScore: latestDetection.bugsConfidenceScore, 
-            numberOfPanicles: latestDetection.numberOfPanicles,
-            paniclesConfidenceScore: latestDetection.paniclesConfidenceScore,
-          });
-        }
       } else {
-        console.error('API returned a success false response.');
+        console.error("API returned a success false response.");
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -99,56 +81,45 @@ const Stats = () => {
     fetchData();
   }, []);
 
-  // Function to refresh data
   const refreshData = () => {
-    fetchData(); // Call fetchData to refresh the data
+    // Update the data here, for demonstration using random values
+    const newData = chartData.datasets[0].data.map(() => Math.floor(Math.random() * 20));
+    setChartData({
+      ...chartData,
+      datasets: [{
+        ...chartData.datasets[0],
+        data: newData
+      }]
+    });
   };
 
-  // Component return statement with UI
+  const screenWidth = Dimensions.get('window').width 
+
   return (
     <View style={styles.statistics}>
+      <View style={styles.statisticsChild} />
+      <View style={[styles.statisticsItem, styles.statisticsLayout]} />
       <Text style={styles.historyData}>HISTORY DATA</Text>
       <View style={styles.chartContainer}>
-        <BarChart
-          data={chartData}
-          width={screenWidth - 20}
-          height={300}
-          yAxisLabel=""
-          chartConfig={{
-            backgroundColor: '#ffffff',
-            backgroundGradientFrom: '#ffffff',
-            backgroundGradientTo: '#ffffff',
-            decimalPlaces: 2,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            style: { borderRadius: 20 },
-          }}
-          style={styles.chart}
+      <BarChart
+        data={chartData}
+        width={screenWidth - 20}  
+        height={300}  
+        yAxisLabel=""
+        chartConfig={{
+          backgroundColor: '#ffffff',
+          backgroundGradientFrom: '#ffffff',
+          backgroundGradientTo: '#ffffff',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: { borderRadius: 20 },
+        }}
+        style={styles.chart}
         />
-      </View>
-
-      <View style={styles.refreshButton}>
+        </View>
+        <View style={styles.refreshButton}>
         <Button title="Refresh Data" onPress={refreshData} />
       </View>
-
-      <View style={styles.detailsButton}>
-        <Button title="Details" onPress={handleDetailspress} />
-      </View>
-
-      {/* New Container for Additional Data */}
-      {/* <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>
-          Bugs Detected: {detectionInfo.numberOfBugs}
-        </Text>
-        <Text style={styles.infoText}>
-          Bugs Confidence: {detectionInfo.bugsConfidenceScore.toFixed(2)}%
-        </Text>
-        <Text style={styles.infoText}>
-          Panicles Detected: {detectionInfo.numberOfPanicles}
-        </Text>
-        <Text style={styles.infoText}>
-          Panicles Confidence: {detectionInfo.paniclesConfidenceScore.toFixed(2)}%
-        </Text>
-      </View> */}
       {/* <View style={[styles.button, styles.buttonShadowBox1]}>
         <View style={[styles.buttonChild, styles.buttonPosition]} />
         <Text style={[styles.getStarted, styles.getTypo1]}>Get Started</Text>
@@ -328,6 +299,15 @@ const Stats = () => {
         contentFit="cover"
         source={require("../assets/task.png")}
       />
+      <Pressable
+        style={({ pressed }) => [
+          styles.buttonContainer,
+          { backgroundColor: pressed ? "#0d1f11" : "#3A7D44" }, // Darken when pressed
+        ]}
+        onPress={handleGetStartedPress}
+      >
+        <Text style={styles.buttonText}>View Details</Text>
+      </Pressable>
     </View>
   );
 };
@@ -1477,29 +1457,22 @@ historyData: {
   left: 105,
   position: "absolute",
   },
-  detailsButton: {
-    color: "#AFE1AF",
-    borderRadius: 5,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    top: 580,
-    width: '45%', 
-    left: 105,
-    position: "absolute",
-    },
-  infoContainer: {
-    backgroundColor: '#f1f1f1',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 20,
-    width: '90%',
-    alignItems: 'center',
-    top: 550,
+  buttonText: {
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
+    color: "#fff", // Button text color
+    fontWeight: "bold",
     left: 20,
+    top: 5,
   },
-  infoText: {
-    fontSize: 16,
-    marginBottom: 5,
+  buttonContainer: {
+    backgroundColor: "#3A7D44", // Button background color
+    borderRadius: 30,
+    elevation: 3,
+    top: 570,
+    width: 150,
+    height: 40,
+    left: 113,
   },
 });
 

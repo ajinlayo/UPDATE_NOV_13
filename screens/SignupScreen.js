@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   eyeIcon: {
-    bottom: 52.5,
-    left: 280,
+    bottom: 30.5,
+    left: 250,
+    position: 'absolute',
   }
 });
 

@@ -137,8 +137,9 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   eyeIcon: {
-    bottom: 53,
-    left: 270,
+    bottom: 30,
+    left: 250,
+    position: 'absolute',
   },
 });
 
